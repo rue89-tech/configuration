@@ -1,0 +1,37 @@
+---
+
+# Deploys analytics API and Insights.
+
+- name: Configure instance(s)
+  hosts: all
+  sudo: True
+  gather_facts: True
+  vars:
+    migrate_db: "yes"
+    openid_workaround: True
+    # Set to false if deployed behind another proxy/load balancer.
+    NGINX_SET_X_FORWARDED_HEADERS: True
+    # These should stay false for the public AMI
+    COMMON_ENABLE_DATADOG: False
+    COMMON_ENABLE_SPLUNKFORWARDER: False
+    ENABLE_LEGACY_ORA: !!null
+  tasks:
+    - name: install packages needed for single server
+      apt: pkg="postfix,libjpeg-dev,memcached" install_recommends=yes state=present
+  roles:
+    - role: nginx
+      nginx_sites:
+      - analytics_api
+      - insights
+    - notifier
+    - analytics_api
+    - insights
+    - oraclejdk
+    - elasticsearch
+    - edx_ansible
+    - role: datadog
+      when: COMMON_ENABLE_DATADOG
+    - role: splunkforwarder
+      when: COMMON_ENABLE_SPLUNKFORWARDER
+    - role: newrelic
+      when: COMMON_ENABLE_NEWRELIC
