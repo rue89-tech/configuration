@@ -5,7 +5,7 @@
 # installs
 
 - name: Configure instance(s)
-  hosts: all
+  hosts: app
   sudo: True
   gather_facts: True
   vars:

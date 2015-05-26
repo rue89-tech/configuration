@@ -3,7 +3,7 @@
 # Deploys analytics API and Insights.
 
 - name: Configure instance(s)
-  hosts: all
+  hosts: analytics
   sudo: True
   gather_facts: True
   vars:
