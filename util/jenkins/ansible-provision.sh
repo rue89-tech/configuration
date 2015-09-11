@@ -76,6 +76,7 @@ if [[ -z $region ]]; then
   region="us-east-1"
 fi
 
+# edX has reservations for sandboxes in this zone, don't change without updating reservations.
 if [[ -z $zone ]]; then
   zone="us-east-1c"
 fi
@@ -98,11 +99,11 @@ fi
 
 if [[ -z $ami ]]; then
   if [[ $server_type == "full_edx_installation" ]]; then
-    ami="ami-867d3bee"
+    ami="ami-ef862184"
   elif [[ $server_type == "ubuntu_12.04" || $server_type == "full_edx_installation_from_scratch" ]]; then
-    ami="ami-e2bbff8a"
+    ami="ami-c15bebaa"
   elif [[ $server_type == "ubuntu_14.04(experimental)" ]]; then
-    ami="ami-88562de0"
+    ami="ami-2dcf7b46"
   fi
 fi
 
@@ -110,8 +111,12 @@ if [[ -z $instance_type ]]; then
   instance_type="t2.medium"
 fi
 
-if [[ -z $enable_monitoring ]]; then
-  enable_monitoring="false"
+if [[ -z $enable_newrelic ]]; then
+  enable_newrelic="false"
+fi
+
+if [[ -z $enable_datadog ]]; then
+  enable_datadog="false"
 fi
 
 # Lowercase the dns name to deal with an ansible bug
@@ -138,6 +143,7 @@ EDXAPP_STATIC_URL_BASE: $static_url_base
 EDXAPP_LMS_NGINX_PORT: 80
 EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
 EDXAPP_CMS_NGINX_PORT: 80
+NGINX_SET_X_FORWARDED_HEADERS: True
 EDX_ANSIBLE_DUMP_VARS: true
 migrate_db: "yes"
 openid_workaround: True
@@ -172,9 +178,9 @@ if [[ $edx_internal == "true" ]]; then
     # user and set edx_internal to True so that
     # xserver is installed
     cat << EOF >> $extra_vars_file
-EDXAPP_PREVIEW_LMS_BASE: preview.${deploy_host}
+EDXAPP_PREVIEW_LMS_BASE: preview-${deploy_host}
 EDXAPP_LMS_BASE: ${deploy_host}
-EDXAPP_CMS_BASE: studio.${deploy_host}
+EDXAPP_CMS_BASE: studio-${deploy_host}
 EDXAPP_SITE_NAME: ${deploy_host}
 CERTS_DOWNLOAD_URL: "http://${deploy_host}:18090"
 CERTS_VERIFY_URL: "http://${deploy_host}:18090"
@@ -184,9 +190,9 @@ COMMON_USER_INFO:
     github: true
     type: admin
 USER_CMD_PROMPT: '[$name_tag] '
-COMMON_ENABLE_NEWRELIC_APP: $enable_monitoring
-COMMON_ENABLE_DATADOG: $enable_monitoring
-FORUM_NEW_RELIC_ENABLE: $enable_monitoring
+COMMON_ENABLE_NEWRELIC_APP: $enable_newrelic
+COMMON_ENABLE_DATADOG: $enable_datadog
+FORUM_NEW_RELIC_ENABLE: $enable_newrelic
 EDXAPP_NEWRELIC_LMS_APPNAME: sandbox-${dns_name}-edxapp-lms
 EDXAPP_NEWRELIC_CMS_APPNAME: sandbox-${dns_name}-edxapp-cms
 EDXAPP_NEWRELIC_WORKERS_APPNAME: sandbox-${dns_name}-edxapp-workers

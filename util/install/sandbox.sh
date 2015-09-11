@@ -27,7 +27,7 @@ sudo apt-get upgrade -y
 ##
 sudo apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev python-pip python-apt python-dev
 sudo pip install --upgrade pip
-sudo pip install --upgrade virtualenv
+sudo -H pip install --upgrade virtualenv
 
 ## Did we specify an openedx release?
 if [ -n "$OPENEDX_RELEASE" ]; then
@@ -35,23 +35,26 @@ if [ -n "$OPENEDX_RELEASE" ]; then
     -e certs_version=$OPENEDX_RELEASE \
     -e forum_version=$OPENEDX_RELEASE \
     -e xqueue_version=$OPENEDX_RELEASE \
+    -e configuration_version=$OPENEDX_RELEASE \
   "
   CONFIG_VER=$OPENEDX_RELEASE
 else
-  CONFIG_VER="release"
+  CONFIG_VER="master"
 fi
 
 ##
 ## Clone the configuration repository and run Ansible
 ##
 cd /var/tmp
-git clone -b $CONFIG_VER https://github.com/edx/configuration
+git clone https://github.com/edx/configuration
+cd configuration
+git checkout $CONFIG_VER
 
 ##
 ## Install the ansible requirements
 ##
 cd /var/tmp/configuration
-sudo pip install -r requirements.txt
+sudo -H pip install -r requirements.txt
 
 ##
 ## Run the edx_sandbox.yml playbook in the configuration/playbooks directory
