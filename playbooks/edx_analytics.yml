@@ -23,9 +23,9 @@
       nginx_sites:
       - analytics_api
       - insights
+    - oraclejdk
     - analytics_api
     - insights
-    - oraclejdk
     - elasticsearch
     - edx_ansible
     - role: datadog
