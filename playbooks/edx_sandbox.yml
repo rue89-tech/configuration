@@ -20,6 +20,7 @@
     COMMON_ENABLE_SPLUNKFORWARDER: False
     ENABLE_LEGACY_ORA: !!null
   roles:
+    - aws
     - role: nginx
       nginx_sites:
       - certs
