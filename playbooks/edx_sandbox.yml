@@ -54,3 +54,11 @@
       when: COMMON_ENABLE_SPLUNKFORWARDER
     - role: newrelic
       when: COMMON_ENABLE_NEWRELIC
+  tasks:
+    - name: cronjob for offline grade calculation
+      cron:
+        name: "cronjob for offline grade calculation"
+        user: root
+        hour: 1
+        minute: 0
+        job: "/edx/bin/edxapp-compute-grades > /dev/null 2>&1"
