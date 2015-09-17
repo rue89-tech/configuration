@@ -59,7 +59,7 @@
       copy:
         src: "./rue89/edxapp-compute-grades"
         dest: "/edx/bin/edxapp-compute-grades"
-        user: edxapp
+        owner: edxapp
         mode: 0755
     - name: cronjob for offline grade calculation
       cron:
