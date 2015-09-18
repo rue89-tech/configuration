@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /edx/app/edxapp/edx-platform
+source /edx/app/edxapp/edxapp_env
+
+for course_id in $(sudo -E -u edxapp /edx/app/edxapp/venvs/edxapp/bin/python manage.py lms dump_course_ids --settings aws); do
+    sudo -E -u www-data /edx/app/edxapp/venvs/edxapp/bin/python manage.py lms compute_grades "$course_id" --settings aws
+done
