@@ -21,6 +21,7 @@
     ENABLE_LEGACY_ORA: !!null
   roles:
     - aws
+    - security
     - role: nginx
       nginx_sites:
       - certs
