@@ -1,0 +1,21 @@
+---
+
+# Deploys Rue89 services instance.
+
+- name: Configure instance(s)
+  hosts: services
+  sudo: True
+  gather_facts: True
+  vars:
+    migrate_db: "yes"
+    openid_workaround: True
+    # These should stay false for the public AMI
+    COMMON_ENABLE_DATADOG: False
+    COMMON_ENABLE_SPLUNKFORWARDER: False
+    ENABLE_LEGACY_ORA: !!null
+  roles:
+    - security
+    - { role: 'rabbitmq', rabbitmq_ip: '127.0.0.1' }
+    - oraclejdk
+    - elasticsearch
+    - edx_ansible
