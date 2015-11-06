@@ -15,6 +15,7 @@
     ENABLE_LEGACY_ORA: !!null
   roles:
     - security
+    - postfix_queue
     - { role: 'rabbitmq', rabbitmq_ip: '127.0.0.1' }
     - oraclejdk
     - elasticsearch

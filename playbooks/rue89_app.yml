@@ -18,6 +18,7 @@
   roles:
     - aws
     - security
+    - postfix_queue
     - role: nginx
       nginx_sites:
       - certs
