@@ -16,7 +16,7 @@
   roles:
     - security
     - postfix_queue
-    - { role: 'rabbitmq', rabbitmq_ip: '127.0.0.1' }
+    - { role: 'rabbitmq', rabbitmq_ip: '' }
     - oraclejdk
     - elasticsearch
     - edx_ansible
