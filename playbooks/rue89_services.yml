@@ -3,7 +3,7 @@
 # Deploys Rue89 services instance.
 
 - name: Configure instance(s)
-  hosts: services
+  hosts: all
   sudo: True
   gather_facts: True
   vars:

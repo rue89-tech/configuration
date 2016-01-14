@@ -3,7 +3,7 @@
 # Deployes Rue89 staging instance.
 
 - name: Configure instance(s)
-  hosts: stage
+  hosts: all
   sudo: True
   gather_facts: True
   vars:

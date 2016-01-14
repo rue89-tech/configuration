@@ -3,7 +3,7 @@
 # Deploys Rue89 edxapp instances.
 
 - name: Configure instance(s)
-  hosts: app
+  hosts: all
   sudo: True
   gather_facts: True
   vars:
