@@ -83,6 +83,6 @@ server {
 
   # Run our actual redirect...
   if ($do_redirect = "true") {
-    #rewrite ^ https://$host$request_uri? permanent;
+    rewrite ^ https://$host$request_uri? permanent;
   }
 }
