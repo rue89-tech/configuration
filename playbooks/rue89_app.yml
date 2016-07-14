@@ -32,7 +32,6 @@
     - { role: 'edxapp', celery_worker: True }
     - edxapp
     - notifier
-    - edx_notes_api
     - oraclejdk
     - forum
     - { role: notifier, NOTIFIER_DIGEST_TASK_INTERVAL: "5" }
