@@ -11,6 +11,7 @@
   roles:
     - aws
     - security
+    - postfix_queue
     - mysql
     - edxlocal
     - analytics_api
