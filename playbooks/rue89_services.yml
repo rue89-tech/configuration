@@ -4,16 +4,15 @@
 
 - name: Configure instance(s)
   hosts: all
-  sudo: True
+  become: True
   gather_facts: True
   vars:
     migrate_db: "yes"
-    openid_workaround: True
     # These should stay false for the public AMI
     COMMON_ENABLE_DATADOG: False
     COMMON_ENABLE_SPLUNKFORWARDER: False
-    ENABLE_LEGACY_ORA: !!null
   roles:
+    - { role: swapfile, SWAPFILE_SIZE: "2GB" }
     - security
     - postfix_queue
     - { role: 'rabbitmq', rabbitmq_ip: '' }
