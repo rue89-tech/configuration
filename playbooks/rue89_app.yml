@@ -16,7 +16,6 @@
     COMMON_ENABLE_DATADOG: False
     SANDBOX_ENABLE_ECOMMERCE: False
     COMMON_ENABLE_SPLUNKFORWARDER: False
-    ENABLE_LEGACY_ORA: !!null
   roles:
     - { role: swapfile, SWAPFILE_SIZE: "2GB" }
     - aws
