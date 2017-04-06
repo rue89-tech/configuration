@@ -1,0 +1,30 @@
+---
+
+# Deploys Rue89 services instance.
+
+- name: Bootstrap instance(s)
+  hosts: all
+  gather_facts: no
+  become: True
+  roles:
+    - python
+
+- name: Configure instance(s)
+  hosts: all
+  become: True
+  gather_facts: True
+  vars:
+    migrate_db: "yes"
+    # These should stay false for the public AMI
+    COMMON_ENABLE_DATADOG: False
+    COMMON_ENABLE_SPLUNKFORWARDER: False
+  roles:
+    - role: swapfile
+      SWAPFILE_SIZE: 2GB
+    - role: rabbitmq
+      rabbitmq_ip: ''
+    - oraclejdk
+    - elasticsearch
+    - edx_ansible
+    - role: postfix_queue
+      when: POSTFIX_QUEUE_EXTERNAL_SMTP_HOST != ''

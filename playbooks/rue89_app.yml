@@ -1,0 +1,65 @@
+---
+
+# Deploys Rue89 edxapp instances.
+
+- name: Bootstrap instance(s)
+  hosts: all
+  gather_facts: no
+  become: True
+  roles:
+    - python
+
+- name: Configure instance(s)
+  hosts: all
+  become: True
+  gather_facts: True
+  vars:
+    migrate_db: "yes"
+    # Set to false if deployed behind another proxy/load balancer.
+    NGINX_SET_X_FORWARDED_HEADERS: False
+    # These should stay false for the public AMI
+    COMMON_ENABLE_DATADOG: False
+    COMMON_ENABLE_SPLUNKFORWARDER: False
+  roles:
+    - role: swapfile
+      SWAPFILE_SIZE: 4GB
+    - aws
+    - security
+    - role: nginx
+      nginx_sites:
+      - certs
+      - cms
+      - lms
+      - forum
+      - xqueue
+      nginx_default_sites:
+      - lms
+    - role: edxapp
+      celery_worker: True
+    - edxapp
+    - oauth_client_setup
+    - forum
+    - role: notifier
+      NOTIFIER_DIGEST_TASK_INTERVAL: 5
+    - role: xqueue
+      update_users: True
+    - certs
+    - edx_ansible
+    - role: postfix_queue
+      when: POSTFIX_QUEUE_EXTERNAL_SMTP_HOST != ''
+  tasks:
+    - name: install packages needed for single server
+      apt: pkg="postfix,libjpeg-dev" install_recommends=yes state=present
+    - name: script for offline grade calculation
+      copy:
+        src: "./rue89/edxapp-compute-grades"
+        dest: "/edx/bin/edxapp-compute-grades"
+        owner: edxapp
+        mode: 0755
+    - name: cronjob for offline grade calculation
+      cron:
+        name: "cronjob for offline grade calculation"
+        user: root
+        hour: 1
+        minute: 0
+        job: "/edx/bin/edxapp-compute-grades > /dev/null 2>&1"
