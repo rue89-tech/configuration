@@ -29,6 +29,8 @@ edx_ansible_debian_pkgs:
   - python-dev
   - libxml2-dev
   - libxslt1-dev
+  - libffi-dev  # Needed to install the Python cryptography library
+  - libssl-dev
   - curl
   - python-yaml
   - python-mysqldb
