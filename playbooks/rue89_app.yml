@@ -19,6 +19,9 @@
     edx_platform_version: 'master'
     # Set to false if deployed behind another proxy/load balancer.
     NGINX_SET_X_FORWARDED_HEADERS: False
+    # Set to redirect from http to https iff behind load balancer
+    NGINX_REDIRECT_TO_HTTPS: true
+    NGINX_HTTPS_REDIRECT_STRATEGY: 'forward_for_proto'
     # These should stay false for the public AMI
     COMMON_ENABLE_DATADOG: False
     SANDBOX_ENABLE_ECOMMERCE: False
