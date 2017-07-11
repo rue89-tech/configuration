@@ -679,7 +679,6 @@ edxapp_helper_scripts:
     - edxapp-runserver
     - edxapp-update-assets
     - edxapp-shell
-    - edxapp-drop-djcelery-tables
 
 edxapp_environment:
   LANG: "{{ EDXAPP_LANG }}"
