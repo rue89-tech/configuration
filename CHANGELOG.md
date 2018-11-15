@@ -338,3 +338,7 @@
 
 - Role: edxapp
   - Added `EDXAPP_VIDEO_IMAGE_SETTINGS` to configure S3-backed video images.
+  
+- Role: common_vars
+  - Added `COMMON_ENABLE_AWS_INTEGRATION` to run the `aws` role when enabled. Default: `False`.
+
