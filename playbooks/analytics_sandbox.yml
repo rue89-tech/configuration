@@ -19,6 +19,7 @@
     - aws
     - security
     - common_vars
+    - analytics_api
     - role: nginx
       nginx_sites:
         - insights
